@@ -1060,7 +1060,7 @@ async function sendWatchedArtwork(chatId: number, illustId: string, ownerUserId:
     : `默认模式已发送第 1 批，剩余图片可通过按钮获取`;
   const statusText = `📚 <b>${escapeHtml(illust.title || illustId)}</b>（共 ${totalPages}P）\n${status}`;
   const statusOptions = {
-    parse_mode: 'HTML',
+    parse_mode: 'HTML' as const,
     reply_markup: buildBatchKeyboard(illustId, 0, Math.ceil(totalPages / 10), totalPages)
   };
   await bot.api.sendMessage(chatId, statusText, statusOptions);
@@ -2213,6 +2213,12 @@ bot.on('callback_query:data', async (ctx) => {
     return;
   }
 
+  const callbackChat = ctx.chat;
+  if (!callbackChat) {
+    await ctx.answerCallbackQuery({ text: '此按钮仅支持在聊天消息中使用。', show_alert: true });
+    return;
+  }
+
   // 1. 单页逐页翻页 (上一页 / 下一页)
   if (data.startsWith('page:')) {
     const [, illustId, pageStr, totalPagesStr] = data.split(':');
@@ -2380,7 +2386,7 @@ bot.on('callback_query:data', async (ctx) => {
       await ctx.replyWithDocument(new InputFile(result.filePath, filename), {
         caption: `🎞️ Pixiv #${illustId} 转码 MP4`
       });
-      await relayToConfiguredChats(ctx, ctx.chat.id, async (targetChatId) => {
+      await relayToConfiguredChats(ctx, callbackChat.id, async (targetChatId) => {
         await ctx.api.sendDocument(targetChatId, new InputFile(result.filePath, filename), {
           caption: `🎞️ Pixiv #${illustId} 转码 MP4`
         });
