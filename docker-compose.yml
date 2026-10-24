@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  pixiv-telegram-bot:
+    build: .
+    container_name: pixiv_telegram_bot
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-YOUR_TELEGRAM_BOT_TOKEN}
+      - UGOIRA_OUTPUT_FORMAT=mp4
+      - SEND_MODE=document_and_photo
+      - NODE_ENV=production
+    volumes:
+      - ./temp_cache:/app/temp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,6 @@
+.env
+.env.*
+data/
+temp/
+temp_cache/
+*.original.bak
