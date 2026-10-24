@@ -32,7 +32,7 @@
 Vercel 版本使用 Telegram Webhook，不会启动长轮询；用户授权、订阅、Cookie 和收藏监控配置通过 Upstash Redis 持久化。Ugoira 动图在此版本中只提供 Pixiv 链接/预览，不执行 FFmpeg 转码。
 
 1. 将项目推送到 GitHub。确认 `.env`、`data/`、Token 和 Cookie 没有提交。若之前的 Bot Token 已经暴露，先在 BotFather 撤销并换新。
-2. 在 Vercel 选择 **Add New → Project**，导入仓库。Framework Preset 选 **Other**，根目录选项目目录；Build Command 使用 `npm run build`，Output Directory 留空。
+2. 在 Vercel 选择 **Add New → Project**，导入仓库。Framework Preset 选 **Other**，根目录选项目目录；Build Command 使用 `npm run build`。`vercel.json` 会将 `public/` 作为静态输出目录。
 3. 在 Vercel Marketplace 为项目创建并连接一个 **Upstash Redis** 数据库。
 4. 在 **Project → Settings → Environment Variables** 为 Production 配置：
    - `TELEGRAM_BOT_TOKEN`：BotFather 提供的 Token。
